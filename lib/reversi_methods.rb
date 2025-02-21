@@ -60,16 +60,21 @@ module ReversiMethods
     turn_succeed
   end
 
-  def turn(board, target_pos, attack_stone_color, direction)
-    return false if target_pos.out_of_board?
-    return false if target_pos.stone_color(board) == attack_stone_color
+  def turn(board, target_pos, attack_stone_color, direction, opponent_encountered = false)
+    return false unless (0..7).include?(target_pos.row) && (0..7).include?(target_pos.col)
 
-    next_pos = target_pos.next_position(direction)
-    if (next_pos.stone_color(board) == attack_stone_color) || turn(board, next_pos, attack_stone_color, direction)
-      board[target_pos.row][target_pos.col] = attack_stone_color
-      true
-    else
+    current = target_pos.stone_color(board)
+    if current == BLANK_CELL
       false
+    elsif current == attack_stone_color
+      opponent_encountered
+    else
+      if turn(board, target_pos.next_position(direction), attack_stone_color, direction, true)
+        board[target_pos.row][target_pos.col] = attack_stone_color
+        true
+      else
+        false
+      end
     end
   end
 
