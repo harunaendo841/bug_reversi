@@ -61,7 +61,7 @@ module ReversiMethods
   end
 
   def turn(board, target_pos, attack_stone_color, direction, opponent_encountered = false)
-    return false unless (0..7).include?(target_pos.row) && (0..7).include?(target_pos.col)
+    return false if target_pos.out_of_board?
 
     current = target_pos.stone_color(board)
     return false if current == BLANK_CELL
