@@ -64,18 +64,14 @@ module ReversiMethods
     return false unless (0..7).include?(target_pos.row) && (0..7).include?(target_pos.col)
 
     current = target_pos.stone_color(board)
-    if current == BLANK_CELL
-      false
-    elsif current == attack_stone_color
-      opponent_encountered
-    else
-      if turn(board, target_pos.next_position(direction), attack_stone_color, direction, true)
-        board[target_pos.row][target_pos.col] = attack_stone_color
-        true
-      else
-        false
-      end
+    return false if current == BLANK_CELL
+    return opponent_encountered if current == attack_stone_color
+    
+    if turn(board, target_pos.next_position(direction), attack_stone_color, direction, true)
+      board[target_pos.row][target_pos.col] = attack_stone_color
+      return true
     end
+    return false
   end
 
   def finished?(board)
