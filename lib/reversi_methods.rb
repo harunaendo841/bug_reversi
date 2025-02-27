@@ -69,9 +69,10 @@ module ReversiMethods
     
     if turn(board, target_pos.next_position(direction), attack_stone_color, direction, true)
       board[target_pos.row][target_pos.col] = attack_stone_color
-      return true
+      true
+    else
+      false
     end
-    return false
   end
 
   def finished?(board)
